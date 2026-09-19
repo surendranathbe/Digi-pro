@@ -312,9 +312,28 @@
   margin-bottom: 10px;
 }
 
+/* Preheader single-word fade & scale */
+.anim-fade-scale {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(6px) scale(0.95);
+  animation: fade-scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .preheader-sep {
   opacity: 0.35;
   font-weight: 300;
+}
+
+@keyframes fade-scale-in {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Distinct Header Grouping: Eliminating Overlap completely */
@@ -333,11 +352,35 @@
   margin: 0 0 6px 0;
 }
 
-.hero-big-title span {
+.hero-big-title .brand-part-normal {
+  color: #0b132b;
+  display: inline-block;
+}
+
+.hero-big-title .brand-part-gradient {
   background: var(--text-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
+}
+
+/* Brand Title single-letter pop-in */
+.title-char-anim {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(16px) rotateX(-35deg);
+  animation: title-char-pop 0.6s cubic-bezier(0.2, 0.85, 0.3, 1) forwards;
+}
+
+@keyframes title-char-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) rotateX(-35deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
 }
 
 .hero-brand-subcaption {
@@ -346,8 +389,16 @@
   letter-spacing: 0.2em;
   color: #475569;
   text-transform: uppercase;
-  margin: 4px 0 0 0; /* Guaranteed clean separation from main text */
+  margin: 4px 0 0 0;
   line-height: 1.3;
+}
+
+/* Subcaption single-word fade & rise */
+.subcaption-word-anim {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: word-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Single-Letter Animated Tagline */
@@ -402,6 +453,25 @@
   max-width: 510px;
 }
 
+/* Supporting Description single-word fade & rise */
+.desc-word-anim {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: word-fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes word-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* 4 Feature Badges (Balanced Grid without Excess Gaps) */
 .hero-four-features {
   display: grid;
@@ -424,6 +494,20 @@
   gap: 5px;
   box-shadow: 0 2px 5px rgba(15, 23, 42, 0.03);
   transition: var(--transition-smooth);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: pill-pop-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pill-pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .feature-mini-pill:hover {
@@ -468,6 +552,9 @@
   transition: var(--transition-smooth);
   cursor: pointer;
   margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: pill-pop-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .cta-grow-button:hover {
@@ -498,6 +585,13 @@
   letter-spacing: 0.16em;
   color: #64748b;
   text-transform: uppercase;
+  opacity: 0;
+  animation: fade-simple 0.6s ease forwards;
+}
+
+@keyframes fade-simple {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 /* ==========================================================================

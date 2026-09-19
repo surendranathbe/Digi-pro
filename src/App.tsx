@@ -146,8 +146,85 @@ const SERVICES_DATA: ServiceItem[] = [
 ]
 
 // ============================================================================
-// SINGLE-LETTER ANIMATED TAGLINE COMPONENT
+// ANIMATED BANNER TEXT COMPONENTS (SINGLE-BY-SINGLE TEXT ANIMATIONS)
 // ============================================================================
+
+// 1. Preheader Tagline: "IDEAS | SOLUTIONS | RESULTS" (Single-word fade & scale)
+const AnimatedPreheader: React.FC = () => {
+  const items = [
+    { text: 'IDEAS', isSep: false },
+    { text: '|', isSep: true },
+    { text: 'SOLUTIONS', isSep: false },
+    { text: '|', isSep: true },
+    { text: 'RESULTS', isSep: false },
+  ]
+  return (
+    <div className="hero-preheader-tag">
+      {items.map((item, idx) => (
+        <span
+          key={idx}
+          className={item.isSep ? 'preheader-sep anim-fade-scale' : 'anim-fade-scale'}
+          style={{ animationDelay: `${0.08 + idx * 0.12}s` }}
+        >
+          {item.text}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+// 2. Brand Title: "Digi-pro" (Single-letter 3D pop-in)
+const AnimatedBrandTitle: React.FC = () => {
+  const parts = [
+    { text: 'Digi-', isGradient: false },
+    { text: 'pro', isGradient: true },
+  ]
+  let charIdx = 0
+  return (
+    <h1 className="hero-big-title">
+      {parts.map((part, pIdx) => (
+        <span
+          key={pIdx}
+          className={part.isGradient ? 'brand-part-gradient' : 'brand-part-normal'}
+        >
+          {part.text.split('').map((char, cIdx) => {
+            const delay = 0.45 + charIdx * 0.055
+            charIdx++
+            return (
+              <span
+                key={cIdx}
+                className="title-char-anim"
+                style={{ animationDelay: `${delay}s` }}
+              >
+                {char}
+              </span>
+            )
+          })}
+        </span>
+      ))}
+    </h1>
+  )
+}
+
+// 3. Brand Subcaption: "YOUR DIGITAL PARTNER FOR GROWTH" (Single-word fade & rise)
+const AnimatedSubcaption: React.FC = () => {
+  const words = ['YOUR', 'DIGITAL', 'PARTNER', 'FOR', 'GROWTH']
+  return (
+    <div className="hero-brand-subcaption">
+      {words.map((word, idx) => (
+        <span
+          key={idx}
+          className="subcaption-word-anim"
+          style={{ animationDelay: `${0.85 + idx * 0.08}s` }}
+        >
+          {word}&nbsp;
+        </span>
+      ))}
+    </div>
+  )
+}
+
+// 4. Main Tagline: "Transforming Ideas into Digital Success" (Single-letter pop-in)
 const SingleLetterTagline: React.FC = () => {
   const words = [
     { text: 'Transforming', isGradient: false },
@@ -167,7 +244,7 @@ const SingleLetterTagline: React.FC = () => {
           <React.Fragment key={wIdx}>
             <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
               {letters.map((char, cIdx) => {
-                const delay = globalCharIndex * 0.038
+                const delay = 1.25 + globalCharIndex * 0.032
                 globalCharIndex++
                 return (
                   <span
@@ -185,6 +262,27 @@ const SingleLetterTagline: React.FC = () => {
         )
       })}
     </h2>
+  )
+}
+
+// 5. Supporting Description: "We build, design, automate and grow digital experiences that help businesses move forward." (Single-word fade & rise)
+const AnimatedSupportingDesc: React.FC = () => {
+  const words =
+    'We build, design, automate and grow digital experiences that help businesses move forward.'.split(
+      ' '
+    )
+  return (
+    <p className="hero-supporting-desc">
+      {words.map((word, idx) => (
+        <span
+          key={idx}
+          className="desc-word-anim"
+          style={{ animationDelay: `${2.05 + idx * 0.04}s` }}
+        >
+          {word}&nbsp;
+        </span>
+      ))}
+    </p>
   )
 }
 
@@ -427,38 +525,26 @@ interface HeroContentProps {
 const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
   return (
     <div className="hero-content-left">
-      {/* Top Preheader Tagline */}
-      <div className="hero-preheader-tag">
-        <span>IDEAS</span>
-        <span className="preheader-sep">|</span>
-        <span>SOLUTIONS</span>
-        <span className="preheader-sep">|</span>
-        <span>RESULTS</span>
-      </div>
+      {/* 1. Top Preheader Tagline (Single-word fade & scale) */}
+      <AnimatedPreheader />
 
-      {/* Brand Title */}
+      {/* 2 & 3. Brand Title (Single-letter 3D pop-in) & Subcaption (Single-word fade & rise) */}
       <div className="hero-brand-heading">
-        <h1 className="hero-big-title">
-          Digi-<span>pro</span>
-        </h1>
-        <div className="hero-brand-subcaption">
-          YOUR DIGITAL PARTNER FOR GROWTH
-        </div>
+        <AnimatedBrandTitle />
+        <AnimatedSubcaption />
       </div>
 
-      {/* Single-Letter Animated Tagline */}
+      {/* 4. Main Tagline (Single-letter gradient pop-in) */}
       <div className="hero-tagline-block">
         <SingleLetterTagline />
       </div>
 
-      {/* Supporting Text */}
-      <p className="hero-supporting-desc">
-        We build, design, automate and grow digital experiences that help businesses move forward.
-      </p>
+      {/* 5. Supporting Description (Single-word fluid rise) */}
+      <AnimatedSupportingDesc />
 
-      {/* 4 Feature Badges (Neat Aligned 4-Col Grid) */}
+      {/* 4 Feature Badges (Cascaded entrance) */}
       <div className="hero-four-features">
-        <div className="feature-mini-pill">
+        <div className="feature-mini-pill" style={{ animationDelay: '2.6s' }}>
           <div className="feature-pill-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
@@ -467,7 +553,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
           <span className="feature-pill-text">Innovative Solutions</span>
         </div>
 
-        <div className="feature-mini-pill">
+        <div className="feature-mini-pill" style={{ animationDelay: '2.68s' }}>
           <div className="feature-pill-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -479,7 +565,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
           <span className="feature-pill-text">Client Focused</span>
         </div>
 
-        <div className="feature-mini-pill">
+        <div className="feature-mini-pill" style={{ animationDelay: '2.76s' }}>
           <div className="feature-pill-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -488,7 +574,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
           <span className="feature-pill-text">Quality Driven</span>
         </div>
 
-        <div className="feature-mini-pill">
+        <div className="feature-mini-pill" style={{ animationDelay: '2.84s' }}>
           <div className="feature-pill-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 3v18h18" />
@@ -503,6 +589,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
       <a
         href="#contact"
         className="cta-grow-button"
+        style={{ animationDelay: '2.95s' }}
         onClick={(e) => {
           e.preventDefault()
           onCtaClick()
@@ -517,7 +604,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
       </a>
 
       {/* Bottom Manifesto */}
-      <div className="hero-bottom-manifesto">
+      <div className="hero-bottom-manifesto" style={{ animationDelay: '3.08s' }}>
         WE BUILD &nbsp;•&nbsp; DESIGN &nbsp;•&nbsp; AUTOMATE &nbsp;•&nbsp; GROW
       </div>
     </div>
