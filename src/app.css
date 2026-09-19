@@ -133,6 +133,7 @@
   letter-spacing: -0.02em;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -360,6 +361,7 @@
 .hero-big-title .brand-part-gradient {
   background: var(--text-gradient);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
@@ -430,6 +432,7 @@
 .char-gradient {
   background: linear-gradient(135deg, #0284c7 0%, #4f46e5 50%, #ec4899 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 900;
 }
@@ -1408,4 +1411,551 @@
     margin-top: 3px;
   }
 }
+
+/* ==========================================================================
+   ABOUT SECTION — Equal 50/50 Alignment for Image & Content
+   Based on about-us.png Workspace & Brand Philosophy
+   ========================================================================== */
+
+.about-section {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  padding: 100px 0;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 40%, #f8fafc 100%);
+  border-top: 1px solid rgba(226, 232, 240, 0.85);
+  overflow: hidden;
+  z-index: 5;
+}
+
+.about-container {
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 0 32px;
+  width: 100%;
+}
+
+/* 50% / 50% Equal Alignment Grid */
+.about-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(36px, 5vw, 68px);
+}
+
+/* Left Column: Image Presentation */
+.about-image-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.about-image-card {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 
+    0 24px 50px -12px rgba(15, 23, 42, 0.14),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.about-image-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 32px 64px -14px rgba(2, 132, 199, 0.2),
+    0 0 0 1px rgba(2, 132, 199, 0.3) inset;
+}
+
+.about-poster-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-image-card:hover .about-poster-img {
+  transform: scale(1.02);
+}
+
+/* Floating Badge 1: Top Pill */
+.about-floating-badge.badge-top {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f172a;
+  z-index: 2;
+  transition: transform 0.25s ease;
+}
+
+.about-floating-badge.badge-top:hover {
+  transform: translateY(-2px);
+}
+
+.badge-sparkle {
+  font-size: 0.95rem;
+}
+
+/* Floating Badge 2: Bottom Checklist Pill */
+.about-floating-badge.badge-bottom {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+  color: #ffffff;
+  z-index: 2;
+  transition: transform 0.25s ease;
+}
+
+.about-floating-badge.badge-bottom:hover {
+  transform: translateY(-2px);
+}
+
+.badge-check-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #0284c7 0%, #10b981 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+}
+
+.badge-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.badge-subtitle {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* Right Column: Content */
+.about-content-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+}
+
+.about-preheader-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0284c7;
+  background: rgba(2, 132, 199, 0.08);
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(2, 132, 199, 0.16);
+  margin-bottom: 14px;
+}
+
+.about-tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0284c7;
+}
+
+.about-main-title {
+  font-size: clamp(2rem, 3.2vw, 2.85rem);
+  font-weight: 900;
+  line-height: 1.16;
+  letter-spacing: -0.03em;
+  color: #0b132b;
+  margin-bottom: 14px;
+}
+
+.about-main-title span {
+  background: var(--text-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.about-mission-quote {
+  font-size: 1.02rem;
+  font-style: italic;
+  color: #1e293b;
+  font-weight: 600;
+  line-height: 1.55;
+  margin-bottom: 14px;
+  border-left: 3px solid #0284c7;
+  padding-left: 14px;
+}
+
+.about-desc-text {
+  font-size: 0.94rem;
+  color: var(--text-secondary);
+  line-height: 1.62;
+  margin-bottom: 22px;
+}
+
+/* 4 Core Checklist Points */
+.about-checklist-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.about-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+  transition: var(--transition-smooth);
+}
+
+.about-check-item:hover {
+  border-color: #0284c7;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.08);
+}
+
+.check-icon-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.check-item-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.check-item-text strong {
+  font-size: 0.82rem;
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.check-item-text span {
+  font-size: 0.72rem;
+  color: #64748b;
+  line-height: 1.35;
+  margin-top: 1px;
+}
+
+/* 3 Leather-Book Inspired Pillars: WORK • CLIENT • PROJECTS */
+.about-three-pillars {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.pillar-mini-chip {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 6px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+  transition: var(--transition-smooth);
+}
+
+.pillar-mini-chip:hover {
+  transform: translateY(-2px);
+  border-color: #0284c7;
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.1);
+}
+
+.chip-label {
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #0f172a;
+}
+
+.chip-desc {
+  font-size: 0.68rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Action CTA Row */
+.about-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.about-cta-btn {
+  margin-bottom: 0 !important;
+}
+
+.about-manifesto-sub {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   ABOUT SECTION MEDIA QUERIES
+   ========================================================================== */
+/* iPad Mini & Tablet Landscape (769px to 1024px) - Clean 2-Column Balanced Alignment */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .about-section {
+    padding: 42px 0 46px 0;
+  }
+  .about-container {
+    padding: 0 24px;
+  }
+  .about-layout-grid {
+    grid-template-columns: 44% 56%;
+    gap: 26px;
+    align-items: center;
+  }
+  .about-image-card {
+    max-width: 410px;
+    border-radius: 20px;
+  }
+  .about-preheader-tag {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    margin-bottom: 8px;
+  }
+  .about-main-title {
+    font-size: 1.82rem;
+    line-height: 1.18;
+    margin-bottom: 8px;
+  }
+  .about-mission-quote {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    margin-bottom: 8px;
+    padding-left: 10px;
+    border-left-width: 2.5px;
+  }
+  .about-desc-text {
+    font-size: 0.83rem;
+    line-height: 1.48;
+    margin-bottom: 12px;
+  }
+  .about-checklist-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+  .about-check-item {
+    padding: 6px 8px;
+    border-radius: 9px;
+    gap: 7px;
+  }
+  .check-icon-circle {
+    width: 18px;
+    height: 18px;
+  }
+  .check-icon-circle svg {
+    width: 11px;
+    height: 11px;
+  }
+  .check-item-text strong {
+    font-size: 0.73rem;
+  }
+  .check-item-text span {
+    font-size: 0.64rem;
+    line-height: 1.2;
+  }
+  .about-three-pillars {
+    gap: 7px;
+    margin-bottom: 14px;
+    width: 100%;
+  }
+  .pillar-mini-chip {
+    padding: 6px 4px;
+    border-radius: 8px;
+  }
+  .chip-label {
+    font-size: 0.72rem;
+  }
+  .chip-desc {
+    font-size: 0.62rem;
+  }
+  .about-actions-row {
+    gap: 12px;
+  }
+  .about-cta-btn {
+    padding: 8px 14px 8px 18px !important;
+    font-size: 0.82rem !important;
+  }
+  .about-cta-btn .cta-arrow-circle {
+    width: 24px;
+    height: 24px;
+  }
+  .about-manifesto-sub {
+    font-size: 0.66rem;
+  }
+  .about-floating-badge.badge-top {
+    top: 12px;
+    left: 12px;
+    padding: 6px 12px;
+    font-size: 0.72rem;
+  }
+  .about-floating-badge.badge-bottom {
+    bottom: 12px;
+    right: 12px;
+    padding: 7px 12px;
+  }
+  .badge-check-icon {
+    width: 24px;
+    height: 24px;
+  }
+  .badge-title {
+    font-size: 0.72rem;
+  }
+  .badge-subtitle {
+    font-size: 0.62rem;
+  }
+}
+
+/* Portrait Tablets & Mobile Devices (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .about-section {
+    padding: 50px 0 60px 0;
+  }
+  .about-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .about-image-column {
+    order: 1;
+  }
+  .about-image-card {
+    max-width: 400px;
+    border-radius: 20px;
+  }
+  .about-content-column {
+    order: 2;
+    align-items: center;
+    text-align: center;
+  }
+  .about-mission-quote {
+    text-align: left;
+    max-width: 480px;
+  }
+  .about-desc-text {
+    text-align: center;
+    max-width: 480px;
+  }
+  .about-checklist-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    text-align: left;
+    max-width: 480px;
+    width: 100%;
+  }
+  .about-three-pillars {
+    max-width: 480px;
+    width: 100%;
+  }
+  .about-actions-row {
+    justify-content: center;
+  }
+  .about-floating-badge.badge-top {
+    top: 12px;
+    left: 12px;
+    padding: 6px 12px;
+    font-size: 0.74rem;
+  }
+  .about-floating-badge.badge-bottom {
+    bottom: 12px;
+    right: 12px;
+    padding: 8px 12px;
+  }
+}
+
+/* Small mobile devices (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  .about-checklist-grid {
+    grid-template-columns: 1fr;
+  }
+  .about-image-card {
+    max-width: 310px;
+  }
+}
+
+/* ==========================================================================
+   COMING SOON PLACEHOLDER SECTIONS & PAGES
+   ========================================================================== */
+.coming-soon-section,
+.page-placeholder {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  text-transform: uppercase;
+  background: #f8fafc;
+  padding: 80px 24px 40px;
+}
+
 

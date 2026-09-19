@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import './app.css'
 import logo from './assets/digi-pro-logo.png'
+import aboutImg from './assets/about-us.png'
+import Services from './pages/Services'
+import Solutions from './pages/Solutions'
+import Portfolios from './pages/Portfolios'
+import CaseStudies from './pages/CaseStudies'
+import Contact from './pages/Contact'
+import Consultant from './pages/Consultant'
+import About from './pages/about'
 
 // ============================================================================
 // SERVICE DATA INTERFACE & DATA ARRAY
@@ -177,7 +185,7 @@ const AnimatedPreheader: React.FC = () => {
 const AnimatedBrandTitle: React.FC = () => {
   const parts = [
     { text: 'Digi-', isGradient: false },
-    { text: 'pro', isGradient: true },
+    { text: 'pro', isGradient: false },
   ]
   let charIdx = 0
   return (
@@ -632,12 +640,171 @@ const HeroSection: React.FC<{
 }
 
 // ============================================================================
+// MODULAR COMPONENT: AboutSection (50% / 50% Equal Alignment Layout)
+// ============================================================================
+interface AboutSectionProps {
+  onCtaClick: () => void
+}
+
+const AboutSection: React.FC<AboutSectionProps> = ({ onCtaClick }) => {
+  return (
+    <section id="about" className="about-section">
+      <div className="about-container">
+        {/* Equal 50/50 Grid */}
+        <div className="about-layout-grid">
+          {/* Left Column (50%) — Visual Presentation of about-us.png */}
+          <div className="about-image-column">
+            <div className="about-image-card">
+              <img
+                src={aboutImg}
+                alt="Digi-pro Workspace — Turning Ideas into Real Results"
+                className="about-poster-img"
+                loading="lazy"
+              />
+              {/* Floating Badge 1: Top Floating Pill */}
+              
+              
+            </div>
+          </div>
+
+          {/* Right Column (50%) — Content based directly on about-us.png */}
+          <div className="about-content-column">
+            <div className="about-preheader-tag">
+              <span className="about-tag-dot"></span>
+              <span>ABOUT DIGI-PRO</span>
+            </div>
+
+            <h2 className="about-main-title">
+              Turning Your Ideas into <span>Real Results</span>
+            </h2>
+
+            <p className="about-mission-quote">
+              “Good ideas grow here. We plan, build, and scale digital experiences with disciplined execution so your business moves forward.”
+            </p>
+
+            <p className="about-desc-text">
+              We operate with a focused daily mission: structured strategy, transparent client partnership, and delivering high-performance websites, ERP automation, and creative digital campaigns.
+            </p>
+
+            {/* 4 Core Checklist Points inspired by the notepad in the image */}
+            <div className="about-checklist-grid">
+              <div className="about-check-item">
+                <div className="check-icon-circle">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <div className="check-item-text">
+                  <strong>Disciplined Work</strong>
+                  <span>Strategy & thorough execution</span>
+                </div>
+              </div>
+
+              <div className="about-check-item">
+                <div className="check-icon-circle">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <div className="check-item-text">
+                  <strong>Client-First Mindset</strong>
+                  <span>Transparent shared vision</span>
+                </div>
+              </div>
+
+              <div className="about-check-item">
+                <div className="check-icon-circle">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <div className="check-item-text">
+                  <strong>Complete Projects</strong>
+                  <span>On-time web & creative delivery</span>
+                </div>
+              </div>
+
+              <div className="about-check-item">
+                <div className="check-icon-circle">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                <div className="check-item-text">
+                  <strong>Grow Business</strong>
+                  <span>Marketing to expand your reach</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 3 Pillars Inspired by the Leather Notebooks: WORK • CLIENT • PROJECTS */}
+            <div className="about-three-pillars">
+              <div className="pillar-mini-chip">
+                <span className="chip-label">WORK</span>
+                <span className="chip-desc">Technical Mastery</span>
+              </div>
+              <div className="pillar-mini-chip">
+                <span className="chip-label">CLIENT</span>
+                <span className="chip-desc">Trusted Partner</span>
+              </div>
+              <div className="pillar-mini-chip">
+                <span className="chip-label">PROJECTS</span>
+                <span className="chip-desc">Proven Delivery</span>
+              </div>
+            </div>
+
+            {/* Action CTA */}
+            <div className="about-actions-row">
+              <a
+                href="#contact"
+                className="cta-grow-button about-cta-btn"
+                onClick={(e) => {
+                  e.preventDefault()
+                  onCtaClick()
+                }}
+              >
+                <span>LET'S GROW TOGETHER</span>
+                <div className="cta-arrow-circle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </div>
+              </a>
+              <span className="about-manifesto-sub">
+                Small Businesses • Bigger Possibilities
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ============================================================================
 // MAIN APP COMPONENT
 // ============================================================================
 function App() {
-  const [activeTab, setActiveTab] = useState('home')
+  const [activeTab, setActiveTab] = useState(() => {
+    const hash = window.location.hash.replace('#', '')
+    return hash || 'home'
+  })
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Sync with browser back/forward and URL hash
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '')
+      if (hash) {
+        setActiveTab(hash)
+      } else {
+        setActiveTab('home')
+      }
+    }
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
 
   // Track window scroll for elevated header effect
   useEffect(() => {
@@ -687,10 +854,8 @@ function App() {
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId)
     setMobileMenuOpen(false)
-    const element = document.getElementById(tabId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
+    window.location.hash = tabId
+    window.scrollTo({ top: 0, behavior: 'instant' })
   }
 
   return (
@@ -800,9 +965,21 @@ function App() {
         </a>
       </div>
 
-      {/* ================= HERO SECTION ================= */}
-      <main>
-        <HeroSection onTabClick={handleTabClick} />
+      {/* ================= DEDICATED INDIVIDUAL PAGE VIEWS ================= */}
+      <main className="main-content">
+        {activeTab === 'home' && (
+          <>
+            <HeroSection onTabClick={handleTabClick} />
+            <AboutSection onCtaClick={() => handleTabClick('contact')} />
+          </>
+        )}
+        {activeTab === 'about' && <About />}
+        {activeTab === 'services' && <Services />}
+        {activeTab === 'solutions' && <Solutions />}
+        {activeTab === 'portfolios' && <Portfolios />}
+        {activeTab === 'case-studies' && <CaseStudies />}
+        {activeTab === 'contact' && <Contact />}
+        {activeTab === 'consultant' && <Consultant />}
       </main>
     </div>
   )
