@@ -1,35 +1,58 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './app.css'
 import logo from './assets/digi-pro-logo.png'
 import aboutImg from './assets/about-us.png'
-import Services from './pages/Services'
 import Solutions from './pages/Solutions'
 import Portfolios from './pages/Portfolios'
 import CaseStudies from './pages/CaseStudies'
 import Contact from './pages/Contact'
 import Consultant from './pages/Consultant'
 import About from './pages/about'
+import { EnquiryModal } from './components/EnquiryModal'
+import { TechnologiesSection } from './components/TechnologiesSection'
+import { OngoingProjectsSection } from './components/OngoingProjectsSection'
+import { FooterSection } from './components/FooterSection'
 
 // ============================================================================
-// SERVICE DATA INTERFACE & DATA ARRAY
+// SERVICE DATA INTERFACE & DATA ARRAY WITH DETAILED ROLE INFORMATION
 // ============================================================================
-interface ServiceItem {
+export interface ProcessStep {
+  step: string
+  stageBadge: string
+  stageName: string
+  title: string
+  desc: string
+}
+
+export interface ServiceItem {
   id: string
   name: string
   tagline: string
+  roleTitle: string
   description: string
   className: string
   color: string
   gradient: string
   glow: string
   icon: React.ReactNode
+  responsibilities: {
+    title: string
+    desc: string
+  }[]
+  deliverables: string[]
+  businessImpact: string
+  metricValue: string
+  metricLabel: string
+  workflow: string[]
+  processSteps: ProcessStep[]
 }
 
-const SERVICES_DATA: ServiceItem[] = [
+export const SERVICES_DATA: ServiceItem[] = [
   {
     id: 'biz-dev',
     name: 'Business Development',
     tagline: 'Strategic Growth & Scaling',
+    roleTitle: 'Strategic Growth & Business Expansion Specialist',
     description:
       'Turn your ideas into practical growth strategies. We help businesses improve their digital presence, reach new customers and build sustainable growth.',
     className: 'biz-dev',
@@ -38,22 +61,54 @@ const SERVICES_DATA: ServiceItem[] = [
     glow: 'rgba(245, 158, 11, 0.55)',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        {/* Base axis */}
         <path d="M3 20.5h18" />
-        {/* 3 Ascending growth bar columns */}
         <rect x="4.5" y="13" width="3.2" height="7.5" rx="0.8" fill="currentColor" fillOpacity="0.32" />
         <rect x="10.4" y="8.5" width="3.2" height="12" rx="0.8" fill="currentColor" fillOpacity="0.32" />
         <rect x="16.3" y="4.5" width="3.2" height="16" rx="0.8" fill="currentColor" fillOpacity="0.32" />
-        {/* Upward diagonal growth trend arrow */}
         <path d="M3.5 13.5L8.5 8.5L13 12L19.5 4.5" strokeWidth="2.3" />
         <polyline points="15 4.5 19.5 4.5 19.5 9" strokeWidth="2.3" />
       </svg>
     ),
+    responsibilities: [
+      { title: 'Market & Opportunity Discovery', desc: 'In-depth industry benchmarking to identify high-margin revenue openings.' },
+      { title: 'Go-to-Market (GTM) Architecture', desc: 'Comprehensive roadmaps covering positioning, pricing, and sales funnels.' },
+      { title: 'Predictable Sales Pipelines', desc: 'Structured lead generation and client onboarding systems for recurring growth.' },
+      { title: 'Strategic Commercial Partnerships', desc: 'Unlocking high-leverage business alliances and distribution networks.' },
+    ],
+    deliverables: ['Market Audit', 'GTM Roadmap', 'Sales Funnel Blueprint', 'Partnership Matrix'],
+    businessImpact: 'Transforms unpredictable sales into a structured, scalable engine that drives predictable quarterly revenue.',
+    metricValue: '3.5x',
+    metricLabel: 'Average Revenue Pipeline Multiplier',
+    workflow: ['Discovery & Audit', 'Pipeline Blueprint', 'Engine Activation', 'Quarterly Scaling'],
+    processSteps: [
+      {
+        step: '01',
+        stageBadge: 'HOW WE START',
+        stageName: 'Starting Stage',
+        title: 'Discovery & Market Opportunity Audit',
+        desc: 'We analyze your commercial baseline, examine competitor pricing, identify untapped market openings, and set measurable revenue KPIs.',
+      },
+      {
+        step: '02',
+        stageBadge: 'HOW WE WORK',
+        stageName: 'Working Stage',
+        title: 'GTM Strategy & Commercial Pipeline Build',
+        desc: 'We construct your go-to-market architecture, design automated buyer qualification funnels, and facilitate strategic partnership outreach.',
+      },
+      {
+        step: '03',
+        stageBadge: 'HOW WE END',
+        stageName: 'Final Stage',
+        title: 'Scalable Sales Engine & Commercial Growth',
+        desc: 'We deploy an automated client acquisition engine, deliver complete sales playbooks to your team, and establish ongoing growth reviews.',
+      },
+    ],
   },
   {
     id: 'web-dev',
     name: 'Website Development',
     tagline: 'High-Performance Web & Apps',
+    roleTitle: 'Full-Stack Web Engineering & UI/UX Architecture',
     description:
       'Modern, responsive and fast websites designed to showcase your business, attract customers and convert visitors into clients.',
     className: 'web-dev',
@@ -62,22 +117,108 @@ const SERVICES_DATA: ServiceItem[] = [
     glow: 'rgba(2, 132, 199, 0.55)',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        {/* Laptop Display Frame */}
         <rect x="3" y="4" width="18" height="12" rx="2" fill="currentColor" fillOpacity="0.22" />
-        {/* Code Brackets </> */}
         <path d="M8 8.5L6 10L8 11.5" strokeWidth="2.2" />
         <path d="M16 8.5L18 10L16 11.5" strokeWidth="2.2" />
         <line x1="12.5" y1="8" x2="11.5" y2="12" strokeWidth="2" />
-        {/* Laptop Base & Stand Platform */}
         <path d="M2 16h20v1.5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V16z" fill="currentColor" fillOpacity="0.38" />
         <line x1="10" y1="16" x2="14" y2="16" strokeWidth="2.2" />
       </svg>
     ),
+    responsibilities: [
+      { title: 'Custom Web & Web App Engineering', desc: 'Bespoke frontend and backend systems built on modern, scalable frameworks for speed and security.' },
+      { title: 'Pixel-Perfect Responsive UI/UX', desc: 'Flawless digital experiences crafted to engage customers seamlessly across mobile, tablet, and desktop.' },
+      { title: 'Core Web Vitals & Speed Optimization', desc: 'Sub-second page speeds, clean semantic code, and technical SEO structure for superior Google rank.' },
+      { title: 'Secure API & Cloud Integrations', desc: 'Payment gateways, ERP connectivity, custom databases, and automated cloud deployments.' },
+    ],
+    deliverables: ['Custom Web Platform', 'Responsive Mobile UI', 'Technical SEO & Speed', 'Admin Management CMS'],
+    businessImpact: 'Builds unshakeable digital authority, maximizes conversion rates, and ensures 99.9% uptime for your brand.',
+    metricValue: '< 0.8s',
+    metricLabel: 'Ultra-Fast Page Load Speed',
+    workflow: ['UX Wireframing', 'Core Engineering', 'Performance Tuning', 'Cloud Deployment'],
+    processSteps: [
+      {
+        step: '01',
+        stageBadge: 'HOW WE START',
+        stageName: 'Starting Stage',
+        title: 'Requirements, Wireframes & Tech Architecture',
+        desc: 'We define your brand objectives, create high-fidelity UI/UX wireframes, and select modern, scalable tech stacks for top performance.',
+      },
+      {
+        step: '02',
+        stageBadge: 'HOW WE WORK',
+        stageName: 'Working Stage',
+        title: 'Agile Sprint Engineering & Interactive Previews',
+        desc: 'We build with clean modular code, provide weekly staging previews for review, and optimize responsiveness and sub-second Core Web Vitals.',
+      },
+      {
+        step: '03',
+        stageBadge: 'HOW WE END',
+        stageName: 'Final Stage',
+        title: 'Cloud Deployment, QA & Complete Handover',
+        desc: 'We conduct full security and browser tests, deploy to high-uptime cloud infrastructure, and hand over 100% source code with CMS training.',
+      },
+    ],
+  },
+  {
+    id: 'seo-analysis',
+    name: 'SEO Analysis',
+    tagline: 'Search Visibility & Ranking Intelligence',
+    roleTitle: 'Senior Technical SEO Analyst & Search Growth Strategist',
+    description:
+      'We audit, optimize, and scale your organic search footprint. By eliminating technical crawl barriers and targeting commercial-intent keywords, we position your business directly in front of active buyers on Google.',
+    className: 'seo-analysis',
+    color: '#06b6d4',
+    gradient: 'linear-gradient(135deg, #0891b2 0%, #06b6d4 100%)',
+    glow: 'rgba(6, 182, 212, 0.55)',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="currentColor" fillOpacity="0.25" />
+        <line x1="15.5" y1="15.5" x2="21" y2="21" strokeWidth="2.5" />
+        <path d="M7 12l2.5-2.5 2 2 3-3.5" strokeWidth="2" />
+        <polyline points="12 8 14.5 8 14.5 10.5" strokeWidth="2" />
+      </svg>
+    ),
+    responsibilities: [
+      { title: 'Technical Crawl & Index Architecture', desc: 'Eliminate crawl budget waste, broken redirect loops, canonical errors, and schema omissions that block Google indexation.' },
+      { title: 'Commercial-Intent Keyword Strategy', desc: 'Uncover high-intent search terms your prospective buyers use, structuring content topical clusters that rank and convert.' },
+      { title: 'Core Web Vitals & On-Page SERP Tuning', desc: 'Optimize page experience, meta tags, heading hierarchies, internal linking, and rich snippets for top 3 Google rankings.' },
+      { title: 'Competitor Benchmark & Authority Scaling', desc: 'Benchmark rival ranking factors and build clean, high-authority backlink profiles for sustained organic domain growth.' },
+    ],
+    deliverables: ['Full Technical SEO Audit', 'Keyword Rank Strategy', 'Core Web Vitals Tuning', 'Competitor Gap Matrix'],
+    businessImpact: 'Captures top organic Google rankings to generate compounding, high-intent inbound inquiries without recurring ad spend.',
+    metricValue: '#1 Rank',
+    metricLabel: 'Google SERP Visibility Goal',
+    workflow: ['Technical Site Audit', 'Keyword Intent Architecture', 'On-Page & Speed Tuning', 'Authority & Rank Scaling'],
+    processSteps: [
+      {
+        step: '01',
+        stageBadge: 'HOW WE START',
+        stageName: 'Starting Stage',
+        title: 'Technical Crawl & Keyword Gap Audit',
+        desc: 'We run in-depth site crawls to detect indexing blocks, crawl waste, canonical issues, and benchmark competitor search keyword rankings.',
+      },
+      {
+        step: '02',
+        stageBadge: 'HOW WE WORK',
+        stageName: 'Working Stage',
+        title: 'On-Page Optimization & Intent Clustering',
+        desc: 'We restructure semantic HTML, optimize meta tags and site speed, implement schema markup, and publish commercial-intent content clusters.',
+      },
+      {
+        step: '03',
+        stageBadge: 'HOW WE END',
+        stageName: 'Final Stage',
+        title: 'Authority Backlinks & Live Ranking Tracking',
+        desc: 'We build high-DA backlinks to accelerate domain trust, set up live SERP rank tracking, and deliver transparent monthly conversion reports.',
+      },
+    ],
   },
   {
     id: 'erp-sol',
     name: 'ERP Solutions',
     tagline: 'Enterprise Automation & Workflows',
+    roleTitle: 'Enterprise Systems Architect & Operations Consultant',
     description:
       'Smart business management solutions that connect your operations, automate workflows and help you manage everything efficiently.',
     className: 'erp-sol',
@@ -86,24 +227,56 @@ const SERVICES_DATA: ServiceItem[] = [
     glow: 'rgba(139, 92, 246, 0.55)',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        {/* Center Enterprise Automation Cogwheel */}
         <circle cx="12" cy="12" r="3" fill="currentColor" fillOpacity="0.35" />
         <path d="M12 2.5V5M12 19V21.5M2.5 12H5M19 12H21.5M5.28 5.28L7.05 7.05M16.95 16.95L18.72 18.72M5.28 18.72L7.05 16.95M16.95 7.05L18.72 5.28" strokeWidth="2.2" />
         <circle cx="12" cy="12" r="1.2" fill="currentColor" />
-        {/* Interconnected Enterprise Workflow Nodes */}
         <circle cx="4" cy="4" r="2" fill="currentColor" fillOpacity="0.4" />
         <circle cx="20" cy="4" r="2" fill="currentColor" fillOpacity="0.4" />
         <circle cx="4" cy="20" r="2" fill="currentColor" fillOpacity="0.4" />
         <circle cx="20" cy="20" r="2" fill="currentColor" fillOpacity="0.4" />
-        {/* Connecting Data Pipelines */}
         <path d="M5.5 5.5L7.2 7.2M18.5 5.5L16.8 7.2M5.5 18.5L7.2 16.8M18.5 18.5L16.8 16.8" strokeWidth="1.5" strokeDasharray="1.5 1.5" />
       </svg>
     ),
+    responsibilities: [
+      { title: 'Operations Centralization', desc: 'Unify sales, inventory, accounting, and supply chain in one central dashboard.' },
+      { title: 'Intelligent Workflow Automation', desc: 'Eliminate manual data entry, human error, and multi-department bottlenecks.' },
+      { title: 'Granular Role-Based Permissions', desc: 'Protect critical company data with strict enterprise access control.' },
+      { title: 'Real-Time Financial & KPI Reporting', desc: 'Instant live dashboards for cash flow, stock tracking, and executive metrics.' },
+    ],
+    deliverables: ['Unified ERP Platform', 'Automated Workflows', 'Role-Based Dashboard', 'Staff Training & Docs'],
+    businessImpact: 'Reduces operational overhead by up to 60% and gives leadership 100% transparency into daily business metrics.',
+    metricValue: '60%',
+    metricLabel: 'Reduction in Manual Administrative Work',
+    workflow: ['Process Mapping', 'System Blueprint', 'Data Migration', 'Go-Live Training'],
+    processSteps: [
+      {
+        step: '01',
+        stageBadge: 'HOW WE START',
+        stageName: 'Starting Stage',
+        title: 'Operational Diagnostic & Workflow Mapping',
+        desc: 'We review cross-department operations across sales, inventory, and accounting to uncover manual bottlenecks and data redundancies.',
+      },
+      {
+        step: '02',
+        stageBadge: 'HOW WE WORK',
+        stageName: 'Working Stage',
+        title: 'Custom ERP Architecture & Secure Migration',
+        desc: 'We engineer centralized dashboards, automate cross-team approval workflows, establish role-based permissions, and migrate existing records.',
+      },
+      {
+        step: '03',
+        stageBadge: 'HOW WE END',
+        stageName: 'Final Stage',
+        title: 'Zero-Downtime Go-Live & Staff Training',
+        desc: 'We deliver hands-on training for management and staff, launch the system with zero operational downtime, and provide dedicated support.',
+      },
+    ],
   },
   {
     id: 'digi-mkt',
     name: 'Digital Marketing',
     tagline: 'Data-Driven Audience Acquisition',
+    roleTitle: 'Performance Marketing Director & Acquisition Specialist',
     description:
       'Reach the right audience through SEO, social media and digital campaigns designed to increase visibility, engagement and leads.',
     className: 'digi-mkt',
@@ -112,22 +285,53 @@ const SERVICES_DATA: ServiceItem[] = [
     glow: 'rgba(239, 68, 68, 0.55)',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        {/* High-Impact Broadcast Megaphone / Bullhorn */}
         <path d="M3 10.5V13.5C3 14.33 3.67 15 4.5 15H7L13 19V5L7 9H4.5C3.67 9 3 9.67 3 10.5Z" fill="currentColor" fillOpacity="0.3" />
-        {/* Megaphone Handle */}
         <path d="M7 15V18.5C7 19.33 7.67 20 8.5 20H9C9.55 20 10 19.55 10 19V15" />
-        {/* Speaker Output Line */}
         <line x1="13" y1="5.5" x2="13" y2="18.5" strokeWidth="2.2" />
-        {/* Dynamic Sound & Outreach Broadcast Waves */}
         <path d="M16 9.5C16.8 10.25 17.3 11.08 17.3 12C17.3 12.92 16.8 13.75 16 14.5" strokeWidth="2.2" />
         <path d="M18.8 7C20.2 8.35 21 10.1 21 12C21 13.9 20.2 15.65 18.8 17" strokeWidth="2.2" />
       </svg>
     ),
+    responsibilities: [
+      { title: 'High-Intent Search Engine SEO', desc: 'Dominate top Google rankings for high-intent search terms that convert.' },
+      { title: 'Performance Paid Ads (PPC)', desc: 'Laser-targeted Google, Meta & LinkedIn campaigns with disciplined ROAS focus.' },
+      { title: 'Conversion Rate Optimization (CRO)', desc: 'High-converting landing pages that convert cold traffic into qualified inquiries.' },
+      { title: 'Live ROI Attribution & Analytics', desc: 'Transparent reporting showing exact cost per acquisition and returns.' },
+    ],
+    deliverables: ['Full SEO Optimization', 'Targeted Paid Ads', 'High-Converting Copy', 'Real-Time ROI Dashboard'],
+    businessImpact: 'Drives consistent, qualified customer acquisition while continuously lowering your blended acquisition cost.',
+    metricValue: '4.2x',
+    metricLabel: 'Average Return on Ad Spend (ROAS)',
+    workflow: ['Audience Research', 'Creative Launch', 'Funnels & A/B Testing', 'Scale Profitable Campaigns'],
+    processSteps: [
+      {
+        step: '01',
+        stageBadge: 'HOW WE START',
+        stageName: 'Starting Stage',
+        title: 'Audience Research & Funnel Strategy',
+        desc: 'We pinpoint high-converting buyer personas, review past marketing data, establish target ROAS/CPA metrics, and draft campaign messaging.',
+      },
+      {
+        step: '02',
+        stageBadge: 'HOW WE WORK',
+        stageName: 'Working Stage',
+        title: 'Multi-Channel Ad Launch & A/B Testing',
+        desc: 'We deploy targeted Google, Meta & LinkedIn campaigns, A/B test ad creatives and landing pages, and optimize bids to maximize qualified inquiries.',
+      },
+      {
+        step: '03',
+        stageBadge: 'HOW WE END',
+        stageName: 'Final Stage',
+        title: 'Profitable Campaign Scaling & Attribution',
+        desc: 'We scale high-performing ad sets for compounding revenue, eliminate ad fatigue, and provide real-time dashboards detailing acquisition ROI.',
+      },
+    ],
   },
   {
     id: 'poster-edit',
     name: 'Poster Editing',
     tagline: 'Visual Brand Creatives & Design',
+    roleTitle: 'High-Impact Brand Identity & Visual Creatives',
     description:
       'Professional posters, promotional creatives and social media designs that make your brand stand out and communicate clearly.',
     className: 'poster-edit',
@@ -136,161 +340,107 @@ const SERVICES_DATA: ServiceItem[] = [
     glow: 'rgba(16, 185, 129, 0.55)',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        {/* Artboard Frame with Corner Handles */}
         <rect x="3.5" y="3.5" width="17" height="17" rx="1.5" strokeWidth="1.6" strokeDasharray="3 2" opacity="0.6" />
-        {/* 4 Corner Anchor Points */}
         <rect x="2" y="2" width="3" height="3" rx="0.5" fill="currentColor" />
         <rect x="19" y="2" width="3" height="3" rx="0.5" fill="currentColor" />
         <rect x="2" y="19" width="3" height="3" rx="0.5" fill="currentColor" />
         <rect x="19" y="19" width="3" height="3" rx="0.5" fill="currentColor" />
-        {/* Designer's Pen Nib Tool */}
         <path d="M14.5 6.5L17.5 9.5L11 16L7.5 17L8.5 13.5L14.5 6.5Z" fill="currentColor" fillOpacity="0.32" strokeWidth="1.8" />
         <circle cx="14" cy="10" r="1" fill="currentColor" />
-        {/* Curved Bezier Vector Line */}
         <path d="M6 13C7 10.5 9.5 9 12 9" strokeWidth="1.5" strokeDasharray="2 2" />
       </svg>
     ),
+    responsibilities: [
+      { title: 'Commercial Posters & Event Collateral', desc: 'Striking promotional posters for physical prints, launch events, and venues.' },
+      { title: 'Social Media Creative Suites', desc: 'Unified visual assets for Instagram, LinkedIn, Facebook, and ad placements.' },
+      { title: 'Brand Identity & Vector Toolkits', desc: 'Signature brand colors, vector typography, and cohesive visual guidelines.' },
+      { title: 'Product Launch & Promotional Banners', desc: 'High-contrast digital banners optimized for social engagement and clicks.' },
+    ],
+    deliverables: ['High-Res Print Posters', 'Social Creative Pack', 'Vector Brand Guidelines', 'Ad Banner Suite'],
+    businessImpact: 'Captivates prospective clients immediately, elevating perceived brand value and driving higher conversion.',
+    metricValue: '100%',
+    metricLabel: 'Pixel-Perfect Vector Artwork',
+    workflow: ['Creative Concept', 'Design Drafts', 'Precision Revisions', 'High-Res Production Export'],
+    processSteps: [
+      {
+        step: '01',
+        stageBadge: 'HOW WE START',
+        stageName: 'Starting Stage',
+        title: 'Creative Brief & Visual Brand Discovery',
+        desc: 'We review your brand style guide, promotional goals, audience aesthetics, and event specifications to establish creative moodboards.',
+      },
+      {
+        step: '02',
+        stageBadge: 'HOW WE WORK',
+        stageName: 'Working Stage',
+        title: 'Vector Design Drafting & Iterative Polish',
+        desc: 'We engineer high-contrast graphic layouts, typographic hierarchies, and striking color palettes, refining designs through feedback cycles.',
+      },
+      {
+        step: '03',
+        stageBadge: 'HOW WE END',
+        stageName: 'Final Stage',
+        title: 'Print-Ready Export & Digital Asset Suite',
+        desc: 'We deliver CMYK color-accurate, vector-sharp print files for physical displays, along with multi-resolution digital kits for all social media.',
+      },
+    ],
   },
 ]
 
 // ============================================================================
-// ANIMATED BANNER TEXT COMPONENTS (SINGLE-BY-SINGLE TEXT ANIMATIONS)
+// LIGHTWEIGHT PREMIUM SINGLE-LETTER BANNER ANIMATION COMPONENT
 // ============================================================================
-
-// 1. Preheader Tagline: "IDEAS | SOLUTIONS | RESULTS" (Single-word fade & scale)
-const AnimatedPreheader: React.FC = () => {
-  const items = [
-    { text: 'IDEAS', isSep: false },
-    { text: '|', isSep: true },
-    { text: 'SOLUTIONS', isSep: false },
-    { text: '|', isSep: true },
-    { text: 'RESULTS', isSep: false },
-  ]
-  return (
-    <div className="hero-preheader-tag">
-      {items.map((item, idx) => (
-        <span
-          key={idx}
-          className={item.isSep ? 'preheader-sep anim-fade-scale' : 'anim-fade-scale'}
-          style={{ animationDelay: `${0.08 + idx * 0.12}s` }}
-        >
-          {item.text}
-        </span>
-      ))}
-    </div>
-  )
+interface AnimatedLettersProps {
+  text: string
+  className?: string
+  gradientWords?: string[]
+  startDelay?: number
+  stagger?: number
+  as?: 'h1' | 'h2' | 'span' | 'p' | 'div'
 }
 
-// 2. Brand Title: "Digi-pro" (Single-letter 3D pop-in)
-const AnimatedBrandTitle: React.FC = () => {
-  const parts = [
-    { text: 'Digi-', isGradient: false },
-    { text: 'pro', isGradient: false },
-  ]
-  let charIdx = 0
-  return (
-    <h1 className="hero-big-title">
-      {parts.map((part, pIdx) => (
-        <span
-          key={pIdx}
-          className={part.isGradient ? 'brand-part-gradient' : 'brand-part-normal'}
-        >
-          {part.text.split('').map((char, cIdx) => {
-            const delay = 0.45 + charIdx * 0.055
-            charIdx++
-            return (
-              <span
-                key={cIdx}
-                className="title-char-anim"
-                style={{ animationDelay: `${delay}s` }}
-              >
-                {char}
-              </span>
-            )
-          })}
-        </span>
-      ))}
-    </h1>
-  )
-}
-
-// 3. Brand Subcaption: "YOUR DIGITAL PARTNER FOR GROWTH" (Single-word fade & rise)
-const AnimatedSubcaption: React.FC = () => {
-  const words = ['YOUR', 'DIGITAL', 'PARTNER', 'FOR', 'GROWTH']
-  return (
-    <div className="hero-brand-subcaption">
-      {words.map((word, idx) => (
-        <span
-          key={idx}
-          className="subcaption-word-anim"
-          style={{ animationDelay: `${0.85 + idx * 0.08}s` }}
-        >
-          {word}&nbsp;
-        </span>
-      ))}
-    </div>
-  )
-}
-
-// 4. Main Tagline: "Transforming Ideas into Digital Success" (Single-letter pop-in)
-const SingleLetterTagline: React.FC = () => {
-  const words = [
-    { text: 'Transforming', isGradient: false },
-    { text: 'Ideas', isGradient: false },
-    { text: 'into', isGradient: false },
-    { text: 'Digital', isGradient: true },
-    { text: 'Success', isGradient: true },
-  ]
-
-  let globalCharIndex = 0
+const AnimatedLetters: React.FC<AnimatedLettersProps> = ({
+  text,
+  className = '',
+  gradientWords = [],
+  startDelay = 0.1,
+  stagger = 0.025,
+  as: Component = 'span',
+}) => {
+  let charIndex = 0
+  const words = text.split(' ')
 
   return (
-    <h2 className="hero-main-tagline" aria-label="Transforming Ideas into Digital Success">
+    <Component className={`anim-letters-text ${className}`} aria-label={text}>
       {words.map((word, wIdx) => {
-        const letters = word.text.split('')
+        const isGradient = gradientWords.includes(word)
+        const chars = Array.from(word)
+
         return (
-          <React.Fragment key={wIdx}>
-            <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-              {letters.map((char, cIdx) => {
-                const delay = 1.25 + globalCharIndex * 0.032
-                globalCharIndex++
-                return (
-                  <span
-                    key={cIdx}
-                    className={`char-anim ${word.isGradient ? 'char-gradient' : ''}`}
-                    style={{ animationDelay: `${delay}s` }}
-                  >
-                    {char}
-                  </span>
-                )
-              })}
-            </span>
-            {wIdx < words.length - 1 && <span className="char-space">&nbsp;</span>}
-          </React.Fragment>
+          <span key={wIdx} className="anim-word">
+            {chars.map((char, cIdx) => {
+              const delay = +(startDelay + charIndex * stagger).toFixed(3)
+              charIndex++
+              return (
+                <span
+                  key={cIdx}
+                  className={`anim-char ${isGradient ? 'char-gradient' : ''}`}
+                  style={{ animationDelay: `${delay}s` }}
+                  aria-hidden="true"
+                >
+                  {char}
+                </span>
+              )
+            })}
+            {wIdx < words.length - 1 && (
+              <span className="anim-space" aria-hidden="true">
+                &nbsp;
+              </span>
+            )}
+          </span>
         )
       })}
-    </h2>
-  )
-}
-
-// 5. Supporting Description: "We build, design, automate and grow digital experiences that help businesses move forward." (Single-word fade & rise)
-const AnimatedSupportingDesc: React.FC = () => {
-  const words =
-    'We build, design, automate and grow digital experiences that help businesses move forward.'.split(
-      ' '
-    )
-  return (
-    <p className="hero-supporting-desc">
-      {words.map((word, idx) => (
-        <span
-          key={idx}
-          className="desc-word-anim"
-          style={{ animationDelay: `${2.05 + idx * 0.04}s` }}
-        >
-          {word}&nbsp;
-        </span>
-      ))}
-    </p>
+    </Component>
   )
 }
 
@@ -314,7 +464,7 @@ const CenterGlobe: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
 
       {/* Center Glass Emblem Disc with Digi-pro Branding */}
       <div className="globe-emblem-disc">
-        <img src={logo} alt="Digi-pro Central Logo" className="center-logo-img" />
+        <img src={logo} alt="Digi-pro Central Logo" className="center-logo-img" decoding="async" />
         <div className="center-brand-title">Digi-pro</div>
         <div className="center-brand-sub">GLOBAL PARTNER</div>
       </div>
@@ -439,9 +589,10 @@ const ServicesOrbit: React.FC<ServicesOrbitProps> = ({ onServiceSelect }) => {
           <defs>
             <linearGradient id="polyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.85" />
-              <stop offset="25%" stopColor="#0284c7" stopOpacity="0.85" />
-              <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.85" />
-              <stop offset="75%" stopColor="#ef4444" stopOpacity="0.85" />
+              <stop offset="20%" stopColor="#0284c7" stopOpacity="0.85" />
+              <stop offset="40%" stopColor="#06b6d4" stopOpacity="0.85" />
+              <stop offset="60%" stopColor="#8b5cf6" stopOpacity="0.85" />
+              <stop offset="80%" stopColor="#ef4444" stopOpacity="0.85" />
               <stop offset="100%" stopColor="#10b981" stopOpacity="0.85" />
             </linearGradient>
           </defs>
@@ -533,26 +684,45 @@ interface HeroContentProps {
 const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
   return (
     <div className="hero-content-left">
-      {/* 1. Top Preheader Tagline (Single-word fade & scale) */}
-      <AnimatedPreheader />
+      {/* 1. Top Preheader Tagline */}
+      <div className="hero-preheader-tag">
+        <span className="anim-fade-scale" style={{ animationDelay: '0.05s' }}>IDEAS</span>
+        <span className="preheader-sep">|</span>
+        <span className="anim-fade-scale" style={{ animationDelay: '0.12s' }}>SOLUTIONS</span>
+        <span className="preheader-sep">|</span>
+        <span className="anim-fade-scale" style={{ animationDelay: '0.2s' }}>RESULTS</span>
+      </div>
 
-      {/* 2 & 3. Brand Title (Single-letter 3D pop-in) & Subcaption (Single-word fade & rise) */}
+      {/* 2 & 3. Brand Title (Single-letter animation) & Subcaption */}
       <div className="hero-brand-heading">
-        <AnimatedBrandTitle />
-        <AnimatedSubcaption />
+        <h1 className="hero-big-title">
+          <AnimatedLetters text="Digi-pro" startDelay={0.08} stagger={0.038} />
+        </h1>
+        <div className="hero-brand-subcaption">
+          YOUR DIGITAL PARTNER FOR GROWTH
+        </div>
       </div>
 
-      {/* 4. Main Tagline (Single-letter gradient pop-in) */}
+      {/* 4. Main Banner Tagline (Single-letter premium animation) */}
       <div className="hero-tagline-block">
-        <SingleLetterTagline />
+        <AnimatedLetters
+          text="Transforming Ideas into Digital Success"
+          gradientWords={['Digital', 'Success']}
+          startDelay={0.32}
+          stagger={0.024}
+          className="hero-main-tagline"
+          as="h2"
+        />
       </div>
 
-      {/* 5. Supporting Description (Single-word fluid rise) */}
-      <AnimatedSupportingDesc />
+      {/* 5. Supporting Description */}
+      <p className="hero-supporting-desc">
+        We build, design, automate and grow digital experiences that help businesses move forward.
+      </p>
 
       {/* 4 Feature Badges (Cascaded entrance) */}
       <div className="hero-four-features">
-        <div className="feature-mini-pill" style={{ animationDelay: '2.6s' }}>
+        <div className="feature-mini-pill" style={{ animationDelay: '1.42s' }}>
           <div className="feature-pill-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
@@ -561,7 +731,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
           <span className="feature-pill-text">Innovative Solutions</span>
         </div>
 
-        <div className="feature-mini-pill" style={{ animationDelay: '2.68s' }}>
+        <div className="feature-mini-pill" style={{ animationDelay: '1.5s' }}>
           <div className="feature-pill-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -573,7 +743,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
           <span className="feature-pill-text">Client Focused</span>
         </div>
 
-        <div className="feature-mini-pill" style={{ animationDelay: '2.76s' }}>
+        <div className="feature-mini-pill" style={{ animationDelay: '1.58s' }}>
           <div className="feature-pill-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -582,7 +752,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
           <span className="feature-pill-text">Quality Driven</span>
         </div>
 
-        <div className="feature-mini-pill" style={{ animationDelay: '2.84s' }}>
+        <div className="feature-mini-pill" style={{ animationDelay: '1.66s' }}>
           <div className="feature-pill-icon">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 3v18h18" />
@@ -597,7 +767,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
       <a
         href="#contact"
         className="cta-grow-button"
-        style={{ animationDelay: '2.95s' }}
+        style={{ animationDelay: '1.76s' }}
         onClick={(e) => {
           e.preventDefault()
           onCtaClick()
@@ -612,7 +782,7 @@ const HeroContent: React.FC<HeroContentProps> = ({ onCtaClick }) => {
       </a>
 
       {/* Bottom Manifesto */}
-      <div className="hero-bottom-manifesto" style={{ animationDelay: '3.08s' }}>
+      <div className="hero-bottom-manifesto" style={{ animationDelay: '1.86s' }}>
         WE BUILD &nbsp;•&nbsp; DESIGN &nbsp;•&nbsp; AUTOMATE &nbsp;•&nbsp; GROW
       </div>
     </div>
@@ -647,8 +817,33 @@ interface AboutSectionProps {
 }
 
 const AboutSection: React.FC<AboutSectionProps> = ({ onCtaClick }) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting)
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px',
+      }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section id="about" className="about-section">
+    <section
+      id="about"
+      ref={sectionRef}
+      className={`about-section ${isVisible ? 'is-visible' : ''}`}
+    >
       <div className="about-container">
         {/* Equal 50/50 Grid */}
         <div className="about-layout-grid">
@@ -660,10 +855,8 @@ const AboutSection: React.FC<AboutSectionProps> = ({ onCtaClick }) => {
                 alt="Digi-pro Workspace — Turning Ideas into Real Results"
                 className="about-poster-img"
                 loading="lazy"
+                decoding="async"
               />
-              {/* Floating Badge 1: Top Floating Pill */}
-              
-              
             </div>
           </div>
 
@@ -782,6 +975,201 @@ const AboutSection: React.FC<AboutSectionProps> = ({ onCtaClick }) => {
 }
 
 // ============================================================================
+// MODULAR COMPONENT: ServicesSection (Placed under About Us)
+// ============================================================================
+export interface ServicesSectionProps {
+  onCtaClick: () => void
+}
+
+export const ServicesSection: React.FC<ServicesSectionProps> = ({ onCtaClick }) => {
+  const [activeId, setActiveId] = useState<string>('biz-dev')
+  const [selectedStep, setSelectedStep] = useState<number | null>(null)
+  const [hoveredStep, setHoveredStep] = useState<number | null>(null)
+
+  const activeService = SERVICES_DATA.find((s) => s.id === activeId) || SERVICES_DATA[0]
+  const currentActiveStep = hoveredStep !== null ? hoveredStep : selectedStep
+
+  return (
+    <section id="services" className="services-section">
+      <div className="services-container">
+        {/* Centered Header: 'Our Services' */}
+        <div className="services-header-center">
+          <div className="services-preheader-tag">
+            <span className="services-tag-dot"></span>
+            <span>OUR SERVICES</span>
+          </div>
+
+          <h2 className="services-main-title">
+            Engineered for Growth. Built for <span>Performance.</span>
+          </h2>
+        </div>
+
+        {/* Side-by-Side Horizontal Services Tab Row */}
+        <div className="services-tabs-row" role="tablist" aria-label="Digi-pro Services">
+          {SERVICES_DATA.map((service) => {
+            const isActive = service.id === activeId
+            return (
+              <button
+                key={service.id}
+                role="tab"
+                aria-selected={isActive}
+                className={`service-tab-btn ${isActive ? 'is-active' : ''}`}
+                style={{
+                  ['--tab-color' as string]: service.color,
+                  ['--tab-gradient' as string]: service.gradient,
+                  ['--tab-glow' as string]: service.glow,
+                }}
+                onClick={() => {
+                  setActiveId(service.id)
+                  setSelectedStep(null)
+                  setHoveredStep(null)
+                }}
+              >
+                <span className="service-tab-icon">{service.icon}</span>
+                <span className="service-tab-label">{service.name}</span>
+                {isActive && <span className="service-tab-glow-pill" />}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Detailed Role Showcase Panel */}
+        <div
+          key={activeService.id}
+          className="service-detail-panel"
+          style={{
+            ['--theme-color' as string]: activeService.color,
+            ['--theme-gradient' as string]: activeService.gradient,
+            ['--theme-glow' as string]: activeService.glow,
+          }}
+        >
+          {/* Left Column: Role Details, Key Capability Points, Direct Action */}
+          <div className="service-detail-left">
+            <div className="service-role-badge">
+              <span className="role-dot" style={{ backgroundColor: activeService.color }} />
+              <span>{activeService.roleTitle}</span>
+            </div>
+
+            <h3 className="service-detail-headline">{activeService.tagline}</h3>
+
+            <p className="service-detail-summary">{activeService.description}</p>
+
+            {/* Core Capability Points with Interactive Laser Line Hover Effects */}
+            <div className="service-responsibilities-grid">
+              {activeService.responsibilities.map((item, idx) => (
+                <div key={idx} className="service-resp-card">
+                  {/* 4 Drawing Border Lines on Hover */}
+                  <span className="card-hover-line-top" aria-hidden="true" />
+                  <span className="card-hover-line-right" aria-hidden="true" />
+                  <span className="card-hover-line-bottom" aria-hidden="true" />
+                  <span className="card-hover-line-left" aria-hidden="true" />
+
+                  <div className="resp-icon-circle">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <div className="resp-text-wrap">
+                    <strong className="resp-title">{item.title}</strong>
+                    <span className="resp-desc">{item.desc}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Direct CTA */}
+            <div className="service-detail-actions">
+              <button
+                className="cta-grow-button service-action-cta"
+                onClick={onCtaClick}
+              >
+                <span>CONSULT ABOUT {activeService.name.toUpperCase()}</span>
+                <div className="cta-arrow-circle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Right Column: Process-Wise Execution Framework */}
+          <div className="service-detail-right">
+            <div className="service-workflow-card">
+              <div className="workflow-card-header">
+                <div className="workflow-badge-pill">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                  <span>EXECUTION FRAMEWORK</span>
+                </div>
+                <h4 className="workflow-heading">Process From Start to Finish</h4>
+                <p className="workflow-subtext">Hover or click any stage below to inspect our delivery steps.</p>
+              </div>
+
+              {/* 3 Connected Process-Wise Stages (Interactive Hover/Click Accordion) */}
+              <div className="workflow-process-flow">
+                {activeService.processSteps.map((pStep, pIdx) => {
+                  const isPointActive = currentActiveStep === pIdx
+                  return (
+                    <div
+                      key={pIdx}
+                      className={`process-stage-card stage-${pIdx + 1} ${isPointActive ? 'is-expanded' : ''}`}
+                      onMouseEnter={() => setHoveredStep(pIdx)}
+                      onMouseLeave={() => setHoveredStep(null)}
+                      onClick={() => setSelectedStep(selectedStep === pIdx ? null : pIdx)}
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={isPointActive}
+                      title={`Click or hover to view details for ${pStep.title}`}
+                    >
+                      <div className="stage-node-col">
+                        <div className="stage-node-circle">
+                          <span>{pStep.step}</span>
+                        </div>
+                        {pIdx < activeService.processSteps.length - 1 && (
+                          <div className="stage-track-line" />
+                        )}
+                      </div>
+                      <div className="stage-content-wrap">
+                        <div className="stage-header-row">
+                          <div className="stage-header-line">
+                            <span className={`stage-tag-badge badge-${pIdx + 1}`}>
+                              {pStep.stageBadge}
+                            </span>
+                            <span className="stage-name-meta">{pStep.stageName}</span>
+                          </div>
+                          <div className="stage-expand-indicator">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" className={`expand-chevron ${isPointActive ? 'chevron-rotated' : ''}`}>
+                              <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                          </div>
+                        </div>
+
+                        {/* Always visible Heading */}
+                        <h5 className="stage-action-title">{pStep.title}</h5>
+
+                        {/* Related Content - Displays smoothly on hover or click */}
+                        <div className="stage-desc-collapsible">
+                          <div className="stage-desc-inner">
+                            <p className="stage-action-desc">{pStep.desc}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ============================================================================
 // MAIN APP COMPONENT
 // ============================================================================
 function App() {
@@ -791,6 +1179,7 @@ function App() {
   })
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false)
 
   // Sync with browser back/forward and URL hash
   useEffect(() => {
@@ -872,15 +1261,14 @@ function App() {
               handleTabClick('home')
             }}
           >
-            <img src={logo} alt="Digi pro Logo" className="logo-img" />
+            <img src={logo} alt="Digi pro Logo" className="logo-img" decoding="async" />
             <div className="brand-text">
-              <span className="brand-name">Digi</span>
-              <span className="brand-badge">pro</span>
+              <span className="brand-title">Digi <span className="brand-pro">pro</span></span>
             </div>
           </a>
 
           {/* Desktop Navigation Links */}
-          <ul className="nav-menu">
+          <ul className="nav-links-list">
             {navTabs.map((tab) => (
               <li key={tab.id}>
                 <a
@@ -897,19 +1285,17 @@ function App() {
             ))}
           </ul>
 
-          {/* Consultant CTA Box with Hover Effect */}
+          {/* Enquiry Us CTA Button */}
           <div className="nav-actions">
-            <a
-              href="#consultant"
+            <button
+              type="button"
               className="consultant-box"
-              onClick={(e) => {
-                e.preventDefault()
-                handleTabClick('consultant')
-              }}
+              onClick={() => setIsEnquiryModalOpen(true)}
+              aria-label="Enquiry us"
             >
               <span className="consultant-icon-dot"></span>
-              <span>Consultant</span>
-            </a>
+              <span>Enquiry us</span>
+            </button>
           </div>
 
           {/* Mobile Hamburger Toggle */}
@@ -952,17 +1338,18 @@ function App() {
           ))}
         </ul>
 
-        <a
-          href="#consultant"
+        <button
+          type="button"
           className="consultant-box mobile-consultant-cta"
-          onClick={(e) => {
-            e.preventDefault()
-            handleTabClick('consultant')
+          onClick={() => {
+            setMobileMenuOpen(false)
+            setIsEnquiryModalOpen(true)
           }}
+          aria-label="Enquiry us"
         >
           <span className="consultant-icon-dot"></span>
-          <span>Book a Consultant</span>
-        </a>
+          <span>Enquiry us</span>
+        </button>
       </div>
 
       {/* ================= DEDICATED INDIVIDUAL PAGE VIEWS ================= */}
@@ -971,16 +1358,29 @@ function App() {
           <>
             <HeroSection onTabClick={handleTabClick} />
             <AboutSection onCtaClick={() => handleTabClick('contact')} />
+            <ServicesSection onCtaClick={() => handleTabClick('contact')} />
+            <TechnologiesSection />
+            <OngoingProjectsSection onEnquiryClick={() => setIsEnquiryModalOpen(true)} />
+            <FooterSection
+              onTabClick={handleTabClick}
+              onEnquiryClick={() => setIsEnquiryModalOpen(true)}
+            />
           </>
         )}
         {activeTab === 'about' && <About />}
-        {activeTab === 'services' && <Services />}
+        {activeTab === 'services' && <ServicesSection onCtaClick={() => handleTabClick('contact')} />}
         {activeTab === 'solutions' && <Solutions />}
         {activeTab === 'portfolios' && <Portfolios />}
         {activeTab === 'case-studies' && <CaseStudies />}
         {activeTab === 'contact' && <Contact />}
         {activeTab === 'consultant' && <Consultant />}
       </main>
+
+      {/* Pop-up Modal for Business Enquiry */}
+      <EnquiryModal
+        isOpen={isEnquiryModalOpen}
+        onClose={() => setIsEnquiryModalOpen(false)}
+      />
     </div>
   )
 }
